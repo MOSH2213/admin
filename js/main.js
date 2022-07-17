@@ -136,8 +136,6 @@
     },
   });
 
- 
-
   // Single Bar Chart
   var ctx4 = $("#bar-chart").get(0).getContext("2d");
   var myChart4 = new Chart(ctx4, {
@@ -211,49 +209,51 @@
   });
 })(jQuery);
 
+// Single Bar Chart
+var ctx4 = $("#bar-chart2").get(0).getContext("2d");
+var myChart4 = new Chart(ctx4, {
+  type: "bar",
+  data: {
+    labels: ["Italy", "France", "Spain", "USA", "Argentina", "fsdfs"],
+    datasets: [
+      {
+        backgroundColor: [
+          "rgba(235, 22, 22, .7)",
+          "rgba(235, 22, 22, .6)",
+          "rgba(235, 22, 22, .5)",
+          "rgba(235, 22, 22, .4)",
+          "rgba(235, 22, 22, .3)",
+        ],
+        data: [55, 49, 44, 24, 50, 90],
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+  },
+});
 
- // Single Bar Chart
- var ctx4 = $("#bar-chart2").get(0).getContext("2d");
- var myChart4 = new Chart(ctx4, {
-   type: "bar",
-   data: {
-     labels: ["Italy", "France", "Spain", "USA", "Argentina","fsdfs"],
-     datasets: [
-       {
-         backgroundColor: [
-           "rgba(235, 22, 22, .7)",
-           "rgba(235, 22, 22, .6)",
-           "rgba(235, 22, 22, .5)",
-           "rgba(235, 22, 22, .4)",
-           "rgba(235, 22, 22, .3)",
-         ],
-         data: [55, 49, 44, 24, 50,90],
-       },
-     ],
-   },
-   options: {
-     responsive: true,
-   },
- });
+//---------------------------------
 
- //---------------------------------
+// Single Line Chart
+var ctx31 = $("#line-chart2").get(0).getContext("2d");
+var myChart32 = new Chart(ctx31, {
+  type: "line",
+  data: {
+    labels: [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+    datasets: [
+      {
+        label: "Salse",
+        fill: true,
+        backgroundColor: "rgba(235, 22, 22, .5)",
+        data: [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 10],
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+  },
+});
 
-  // Single Line Chart
-  var ctx31 = $("#line-chart2").get(0).getContext("2d");
-  var myChart32 = new Chart(ctx31, {
-    type: "line",
-    data: {
-      labels: [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
-      datasets: [
-        {
-          label: "Salse",
-          fill: true,
-          backgroundColor: "rgba(235, 22, 22, .5)",
-          data: [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 10],
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-    },
-  });
+
+

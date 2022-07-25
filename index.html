@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>DarkPan - Bootstrap 5 Admin Template</title>
+    <title>Admin Dashboard</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
@@ -32,6 +32,8 @@
     <link href="css/dashstyle.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="css/clock.css">
+
+    <link rel="stylesheet" href="css/dclock.css">
 </head>
 
 <body>
@@ -50,7 +52,7 @@
             <nav class="navbar bg-secondary navbar-dark">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">
-                        <i class="fa fa-user-edit me-2"></i>DarkPan
+                        <i class="fa fa-user-edit me-2"></i>SL SHOPPPER
                     </h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
@@ -128,33 +130,112 @@
                                 </div>
                             </a>
                             <hr class="dropdown-divider" />
-                            <a href="#" class="dropdown-item text-center">See all message</a>
+                            <a href="messages.html" class="dropdown-item text-center">See all message</a>
                         </div>
                     </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Notificatin</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider" />
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider" />
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider" />
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
+                    <div id="cloc" class="dark mx-auto p-1">
+                        <div class="display">
+                            <div class="weekdays"></div>
+                            <div class="ampm"></div>
+                            <div class="alarm"></div>
+                            <div class="digits"></div>
                         </div>
                     </div>
+                    <script>
+                        $(function () {
+                            // Cache some selectors
+
+                            var clock = $("#cloc"),
+                                alarm = clock.find(".alarm"),
+                                ampm = clock.find(".ampm");
+
+                            // Map digits to their names (this will be an array)
+                            var digit_to_name = "zero one two three four five six seven eight nine".split(
+                                " "
+                            );
+
+                            // This object will hold the digit elements
+                            var digits = {};
+
+                            // Positions for the hours, minutes, and seconds
+                            var positions = ["h1", "h2", ":", "m1", "m2", ":", "s1", "s2"];
+
+                            // Generate the digits with the needed markup,
+                            // and add them to the clock
+
+                            var digit_holder = clock.find(".digits");
+
+                            $.each(positions, function () {
+                                if (this == ":") {
+                                    digit_holder.append('<div class="dots">');
+                                } else {
+                                    var pos = $("<div>");
+
+                                    for (var i = 1; i < 8; i++) {
+                                        pos.append('<span class="d' + i + '">');
+                                    }
+
+                                    // Set the digits as key:value pairs in the digits object
+                                    digits[this] = pos;
+
+                                    // Add the digit elements to the page
+                                    digit_holder.append(pos);
+                                }
+                            });
+
+                            // Add the weekday names
+
+                            var weekday_names = "MON TUE WED THU FRI SAT SUN".split(" "),
+                                weekday_holder = clock.find(".weekdays");
+
+                            $.each(weekday_names, function () {
+                                weekday_holder.append("<span>" + this + "</span>");
+                            });
+
+                            var weekdays = clock.find(".weekdays span");
+
+                            // Run a timer every second and update the clock
+
+                            (function update_time() {
+                                // Use moment.js to output the current time as a string
+                                // hh is for the hours in 12-hour format,
+                                // mm - minutes, ss-seconds (all with leading zeroes),
+                                // d is for day of week and A is for AM/PM
+
+                                var now = moment().format("hhmmssdA");
+
+                                digits.h1.attr("class", digit_to_name[now[0]]);
+                                digits.h2.attr("class", digit_to_name[now[1]]);
+                                digits.m1.attr("class", digit_to_name[now[2]]);
+                                digits.m2.attr("class", digit_to_name[now[3]]);
+                                digits.s1.attr("class", digit_to_name[now[4]]);
+                                digits.s2.attr("class", digit_to_name[now[5]]);
+
+                                // The library returns Sunday as the first day of the week.
+                                // Stupid, I know. Lets shift all the days one position down,
+                                // and make Sunday last
+
+                                var dow = now[6];
+                                dow--;
+
+                                // Sunday!
+                                if (dow < 0) {
+                                    // Make it last
+                                    dow = 6;
+                                }
+
+                                // Mark the active day of the week
+                                weekdays.removeClass("active").eq(dow).addClass("active");
+
+                                // Set the am/pm text:
+                                ampm.text(now[7] + now[8]);
+
+                                // Schedule this function to be run again in 1 sec
+                                setTimeout(update_time, 1000);
+                            })();
+                        });
+
+                    </script>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img class="rounded-circle me-lg-2" src="img/user.jpg" alt=""
@@ -162,7 +243,7 @@
                             <span class="d-none d-lg-inline-flex">John Doe</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="profile.html" class="dropdown-item">My Profile</a>
                             <a href="#" class="dropdown-item">Settings</a>
                             <a href="#" class="dropdown-item">Log Out</a>
                         </div>
@@ -250,7 +331,7 @@
                                     let hh = day.getHours() * 30;
                                     let mm = day.getMinutes() * deg;
                                     let ss = day.getSeconds() * deg;
-                        
+
                                     hr.style.transform = `rotateZ(${hh + mm / 12}deg)`;
                                     mn.style.transform = `rotateZ(${mm}deg)`;
                                     sc.style.transform = `rotateZ(${ss}deg)`;
@@ -508,20 +589,24 @@
                                         <tr>
                                             <th scope="col">Image</th>
                                             <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <th scope="row">1</th>
                                             <td>John</td>
+                                            <td>$12k</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">2</th>
                                             <td>Mark</td>
+                                            <td>$12k</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">3</th>
                                             <td>Jacob</td>
+                                            <td>$12k</td>
                                         </tr>
                                     </tbody>
                                 </table>

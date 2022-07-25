@@ -255,5 +255,3 @@ var myChart32 = new Chart(ctx31, {
   },
 });
 
-
-
